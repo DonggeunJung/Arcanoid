@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
         cardRacket.checkCollision();
 
         remain = 0;
-        for(int i=2; i < rows/2; i+=2) {
-            for(int j=3; j < cols-4; j+=4) {
+        for(int y=2; y < rows/2; y+=2) {
+            for(x=3; x < cols-4; x+=4) {
                 if(gameLib.random(1) == 0) continue;
-                JGameLib.Card cardBlock = gameLib.addCardColor(Color.rgb(192,192,255), j,i,4,2);
+                JGameLib.Card cardBlock = gameLib.addCardColor(Color.rgb(192,192,255), x,y,4,2);
                 cardBlock.edgeThick(0.2);
                 cardBlock.checkCollision();
                 remain ++;
