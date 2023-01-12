@@ -143,10 +143,11 @@ public class JGameLib extends View implements SensorEventListener {
         if(card.edgeThick > 0f) {
             pnt.setStyle(Paint.Style.STROKE);
             float strokeWidth = blockSize * card.edgeThick;
-            dstRect.left += strokeWidth;
-            dstRect.right -= strokeWidth;
-            dstRect.top += strokeWidth;
-            dstRect.bottom -= strokeWidth;
+            float strokeHalf = strokeWidth / 2f;
+            dstRect.left += strokeHalf;
+            dstRect.right -= strokeHalf;
+            dstRect.top += strokeHalf;
+            dstRect.bottom -= strokeHalf;
             pnt.setStrokeWidth(strokeWidth);
             pnt.setColor(card.edgeColor);
             canvas.drawRect(dstRect, pnt);

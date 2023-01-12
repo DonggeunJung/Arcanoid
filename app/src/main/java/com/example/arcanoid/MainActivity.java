@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
             for(int j=3; j < cols-4; j+=4) {
                 if(gameLib.random(1) == 0) continue;
                 JGameLib.Card cardBlock = gameLib.addCardColor(Color.rgb(192,192,255), j,i,4,2);
-                cardBlock.edgeThick(0.1);
+                cardBlock.edgeThick(0.2);
                 cardBlock.checkCollision();
                 remain ++;
             }
