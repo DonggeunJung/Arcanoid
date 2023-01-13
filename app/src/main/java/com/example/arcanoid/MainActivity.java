@@ -78,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
         cardBall.move(x, rows/2+1);
         double speed = 0.4;
         if(gameLib.random(0,1) == 0)
-            cardBall.movingEndless(speed, speed);
+            cardBall.movingDir(speed, speed);
         else
-            cardBall.movingEndless(-speed, speed);
+            cardBall.movingDir(-speed, speed);
     }
 
     public void onBtnArrow(View v) {
@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
                 cardBall.move(1, cardBall.screenRect().top);
             else
                 cardBall.move(cols-2, cardBall.screenRect().top);
-            cardBall.movingEndless(-cardBall.unitHrz, cardBall.unitVtc);
+            cardBall.movingDir(-cardBall.unitHrz, cardBall.unitVtc);
         } else if (cardEdgeT.equals(card2) || cardRacket.equals(card2)) {
-            cardBall.movingEndless(cardBall.unitHrz, -cardBall.unitVtc);
+            cardBall.movingDir(cardBall.unitHrz, -cardBall.unitVtc);
         } else if(cardEdgeB.equals(card2)) {
             stopGame();
             newGame();
@@ -134,9 +134,9 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
             remain --;
             if(remain > 0) {
                 if(dir == JGameLib.DirType.LEFT || dir == JGameLib.DirType.RIGHT) {
-                    cardBall.movingEndless(-cardBall.unitHrz, cardBall.unitVtc);
+                    cardBall.movingDir(-cardBall.unitHrz, cardBall.unitVtc);
                 } else {
-                    cardBall.movingEndless(cardBall.unitHrz, -cardBall.unitVtc);
+                    cardBall.movingDir(cardBall.unitHrz, -cardBall.unitVtc);
                 }
             } else {
                 stopGame();
