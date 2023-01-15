@@ -145,6 +145,9 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
         }
     }
 
+    @Override
+    public void onGameTimer(int what) {}
+
     // Game Event end ====================================
 
 }
