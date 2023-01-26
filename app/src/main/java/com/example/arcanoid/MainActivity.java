@@ -5,55 +5,55 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements JGameLib.GameEvent {
-    JGameLib gameLib = null;
+public class MainActivity extends AppCompatActivity implements Mosaic.GameEvent {
+    Mosaic mosaic = null;
     static int rows = 34, cols = 22;
-    JGameLib.Card cardBall, cardRacket;
-    JGameLib.Card cardEdgeL, cardEdgeR, cardEdgeT, cardEdgeB;
+    Mosaic.Card cardBall, cardRacket;
+    Mosaic.Card cardEdgeL, cardEdgeR, cardEdgeT, cardEdgeB;
     int remain = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gameLib = findViewById(R.id.gameLib);
+        mosaic = findViewById(R.id.mosaic);
         initGame();
     }
 
     @Override
     protected void onDestroy() {
-        if(gameLib != null)
-            gameLib.clearMemory();
+        if(mosaic != null)
+            mosaic.clearMemory();
         super.onDestroy();
     }
 
     private void initGame() {
-        gameLib.setScreenGrid(cols, rows);
-        gameLib.listener(this);
+        mosaic.setScreenGrid(cols, rows);
+        mosaic.listener(this);
         newGame();
     }
 
     void newGame() {
-        gameLib.addCardColor(Color.rgb(10, 10, 100));
-        int x = gameLib.random(1, cols-2);
-        cardBall = gameLib.addCardColor(Color.rgb(255, 255, 255), x, rows/2+1, 1, 1);
+        mosaic.addCardColor(Color.rgb(10, 10, 100));
+        int x = mosaic.random(1, cols-2);
+        cardBall = mosaic.addCardColor(Color.rgb(255, 255, 255), x, rows/2+1, 1, 1);
         cardBall.checkCollision();
-        cardEdgeL = gameLib.addCardColor(Color.rgb(255,255,255), 0,0,1,rows);
+        cardEdgeL = mosaic.addCardColor(Color.rgb(255,255,255), 0,0,1,rows);
         cardEdgeL.checkCollision();
-        cardEdgeR = gameLib.addCardColor(Color.rgb(255,255,255), cols-1,0,1,rows);
+        cardEdgeR = mosaic.addCardColor(Color.rgb(255,255,255), cols-1,0,1,rows);
         cardEdgeR.checkCollision();
-        cardEdgeT = gameLib.addCardColor(Color.rgb(255,255,255), 1,0,cols-2,1);
+        cardEdgeT = mosaic.addCardColor(Color.rgb(255,255,255), 1,0,cols-2,1);
         cardEdgeT.checkCollision();
-        cardEdgeB = gameLib.addCardColor(Color.rgb(255,255,140), 1,rows-1,cols-2,1);
+        cardEdgeB = mosaic.addCardColor(Color.rgb(255,255,140), 1,rows-1,cols-2,1);
         cardEdgeB.checkCollision();
-        cardRacket = gameLib.addCardColor(Color.rgb(255,255,255), 8,rows-3,4,1);
+        cardRacket = mosaic.addCardColor(Color.rgb(255,255,255), 8,rows-3,4,1);
         cardRacket.checkCollision();
 
         remain = 0;
         for(int y=2; y < rows/2; y+=2) {
             for(x=3; x < cols-4; x+=4) {
-                if(gameLib.random(2) == 0) continue;
-                JGameLib.Card cardBlock = gameLib.addCardColor(Color.rgb(192,192,255), x,y,4,2);
+                if(mosaic.random(2) == 0) continue;
+                Mosaic.Card cardBlock = mosaic.addCardColor(Color.rgb(192,192,255), x,y,4,2);
                 cardBlock.edgeThick(0.2);
                 cardBlock.checkCollision();
                 remain ++;
@@ -63,17 +63,17 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
 
     void stopGame() {
         cardBall.stopMoving();
-        gameLib.clearMemory();
-        gameLib.popupDialog(null, "Game is finished!", "Close");
+        mosaic.clearMemory();
+        mosaic.popupDialog(null, "Game is finished!", "Close");
     }
 
     // User Event start ====================================
 
     public void onStart(View v) {
-        int x = gameLib.random(1, cols-2);
+        int x = mosaic.random(1, cols-2);
         cardBall.move(x, rows/2+1);
         double speed = 0.4;
-        if(gameLib.random(0,1) == 0)
+        if(mosaic.random(0,1) == 0)
             cardBall.movingDir(speed, speed);
         else
             cardBall.movingDir(-speed, speed);
@@ -103,16 +103,16 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
     // Game Event start ====================================
 
     @Override
-    public void onGameWorkEnded(JGameLib.Card card, JGameLib.WorkType workType) {}
+    public void onGameWorkEnded(Mosaic.Card card, Mosaic.WorkType workType) {}
 
     @Override
-    public void onGameTouchEvent(JGameLib.Card card, int action, float x, float y) {}
+    public void onGameTouchEvent(Mosaic.Card card, int action, float x, float y) {}
 
     @Override
     public void onGameSensor(int sensorType, float x, float y, float z) {}
 
     @Override
-    public void onGameCollision(JGameLib.Card card1, JGameLib.Card card2) {
+    public void onGameCollision(Mosaic.Card card1, Mosaic.Card card2) {
         if (cardEdgeL.equals(card2) || cardEdgeR.equals(card2)) {
             if(cardEdgeL.equals(card2))
                 cardBall.move(1, cardBall.screenRect().top);
@@ -125,11 +125,11 @@ public class MainActivity extends AppCompatActivity implements JGameLib.GameEven
             stopGame();
             newGame();
         } else {
-            JGameLib.DirType dir = card1.collisionDir(card2);
-            gameLib.removeCard(card2);
+            Mosaic.DirType dir = card1.collisionDir(card2);
+            mosaic.removeCard(card2);
             remain --;
             if(remain > 0) {
-                if(dir == JGameLib.DirType.LEFT || dir == JGameLib.DirType.RIGHT) {
+                if(dir == Mosaic.DirType.LEFT || dir == Mosaic.DirType.RIGHT) {
                     cardBall.movingDir(-cardBall.unitHrz, cardBall.unitVtc);
                 } else {
                     cardBall.movingDir(cardBall.unitHrz, -cardBall.unitVtc);
